@@ -3,7 +3,7 @@
 
 liquidity: 0x832E744d07f8f8aC572E449f5Bbe8FeA4fE699ae  https://rinkeby.etherscan.io/address/0x832e744d07f8f8ac572e449f5bbe8fea4fe699ae#code
 
-XXXCoin (Verification pending): 0xc2C003D4fc03574D493d1fDe29766B016842D67f  https://rinkeby.etherscan.io/address/0xc2c003d4fc03574d493d1fde29766b016842d67f#code
+XXXCoin: 0xc2C003D4fc03574D493d1fDe29766B016842D67f  https://rinkeby.etherscan.io/address/0xc2c003d4fc03574d493d1fde29766b016842d67f#code
 
 Staking: https://rinkeby.etherscan.io/address/0x059ac5deefc1664ce906f11ac11eb9a7976b499e#code
 
