@@ -213,6 +213,7 @@ describe("Testing the DAO Project Contract", () => {
     });
 
     it("Check the liquidity function works correctly", async () => {
+      await liquidity.connect
       await xXXToken.connect(owner).mint(owner.address, 10**20);
       await expect (await xXXToken.connect(owner).Staking()).to.be.equal(staking.address);
 
