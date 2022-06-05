@@ -125,20 +125,17 @@ describe("Testing the DAO Project Contract", () => {
     });
 
 
-    it("Checks buy token function is working correctly", async () => {
-      let _oldSignerthreeBalance = await ethers.provider.getBalance(signerthree.address);
-      let _oldSignertwoBalance = await ethers.provider.getBalance(signertwo.address);
-      let _oldowner = await ethers.provider.getBalance(owner.address);
-      const _buy = await aCDMPlatform.connect(signerthree).buy({value: ethers.utils.parseEther("0.5")});
-      await expect (await aCDMPlatform.connect(owner).saleSupply()).to.be.equal(50000000000);
-      await expect (await aCDM.connect(owner).balanceOf(signerthree.address)).to.be.equal(50000000000);
-      await expect (await ethers.provider.getBalance(aCDMPlatform.address)).to.be.equal(ethers.utils.parseEther("0.46"));   
-      let _newSignerthreeBalance = await ethers.provider.getBalance(signerthree.address);
-      let _newSignertwoBalance = await ethers.provider.getBalance(signertwo.address);
-      let _newowner = await ethers.provider.getBalance(owner.address);
-      expect(await (_newSignerthreeBalance)).to.be.lt(_oldSignerthreeBalance);
-      expect(await (_oldSignertwoBalance)).to.be.lt(_newSignertwoBalance);
-      expect(await (_oldowner)).to.be.lt(_newowner);
+    it("Checks buying tokens more than the supply", async () => {
+      const _buy = await aCDMPlatform.connect(signerthree).buy({value: ethers.utils.parseEther("1")});
+      await expect (await aCDMPlatform.connect(owner).saleSupply()).to.be.equal(0);
+      await expect (await aCDM.connect(owner).balanceOf(signerthree.address)).to.be.equal(100000000000);
+      await expect (await ethers.provider.getBalance(aCDMPlatform.address)).to.be.equal(ethers.utils.parseEther("0.92"));   
+      // let _newSignerthreeBalance = await ethers.provider.getBalance(signerthree.address);
+      // let _newSignertwoBalance = await ethers.provider.getBalance(signertwo.address);
+      // let _newowner = await ethers.provider.getBalance(owner.address);
+      // expect(await (_newSignerthreeBalance)).to.be.lt(_oldSignerthreeBalance);
+      // expect(await (_oldSignertwoBalance)).to.be.lt(_newSignertwoBalance);
+      // expect(await (_oldowner)).to.be.lt(_newowner);
     });
 
     // it("Checks the mint function is minting tokens of the address", async () => {
