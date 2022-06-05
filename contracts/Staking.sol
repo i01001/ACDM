@@ -60,6 +60,8 @@ contract Staking is ReentrancyGuard {
     address public targetAddress;
     address public DAOAddress;
     address public XXXTokenAddress;
+    // address public constant WETH1 = 0xc778417E063141139Fce010982780140Aa0cD5Ab;
+
 
     /// @notice addToIndexMap is used to map the staker address to the stakerIndex
     mapping (address => uint256) addToIndexMap; 

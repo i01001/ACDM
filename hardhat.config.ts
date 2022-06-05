@@ -8,6 +8,8 @@ import "hardhat-gas-reporter";
 import "solidity-coverage";
 import "./tasks/index.ts";
 import "@nomiclabs/hardhat-web3";
+import "@uniswap/hardhat-v3-deploy";
+
 
 dotenv.config();
 
@@ -25,6 +27,7 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 // Go to https://hardhat.org/config/ to learn more
 
 let ALCHEMY_KEY = process.env.ALCHEMY_KEY;
+let ALCHEMY_KEY_rink = process.env.ALCHEMY_KEY_rink;
 
 const config: HardhatUserConfig = {
   solidity: "0.8.14",
@@ -32,8 +35,10 @@ const config: HardhatUserConfig = {
     hardhat: {
       allowUnlimitedContractSize: true,
       forking: {
-        url: `https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}`,
-        blockNumber: 14739968,
+        // url: `https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}`,
+        url: `https://eth-rinkeby.alchemyapi.io/v2/${ALCHEMY_KEY_rink}`,
+        // blockNumber: 14739968,
+        blockNumber: 10799770,
       },
     },
     rinkeby: {
