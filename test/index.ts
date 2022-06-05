@@ -124,6 +124,7 @@ describe("Testing the DAO Project Contract", () => {
       expect(await (_oldowner)).to.be.lt(_newowner);
     });
 
+
     
 
     // it("Checks the mint function is minting tokens of the address", async () => {
