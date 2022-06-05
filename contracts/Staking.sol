@@ -54,7 +54,7 @@ contract Staking is ReentrancyGuard {
     stakersInfo[] StakersInfo;
     address public owner;
     uint _initialTimeStamp;
-    uint rewardrate = 3;
+    uint public rewardrate = 3;
     uint public _stakingperiod;
     bool _freeze;
     address public targetAddress;

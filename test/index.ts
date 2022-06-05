@@ -372,11 +372,40 @@ describe("Testing the DAO Project Contract", () => {
       ).to.be.equal(10000000000000);
     });
 
+    it("Checking the staking contract to work as expected", async () => {
+      await expect(staking.connect(owner).stake(0)).to.be.revertedWith(
+        "entergreatervalue()"
+      );
+      await expect(staking.connect(owner).unstake()).to.be.revertedWith(
+        "minimumstakingtime()"
+      );
+    });
 
-    
+    it("Checking the staking freezing function to work as expected", async () => {
+      await staking.connect(owner).freeze();
+      await expect(staking.connect(owner).unstake()).to.be.revertedWith(
+        await "minimumstakingtime()"
+      );
+      await evm_increaseTime(24 * 60 * 60);
+      await expect(staking.connect(owner).unstake()).to.be.revertedWith(
+        "frozen()"
+      );
+      await staking.connect(owner).freeze();
+      await expect(await staking.connect(owner).unstake())
+        .to.emit(staking, "_unstake")
+        .withArgs(owner.address, 1, 0);
+    });
+
+    it("Checking the percentage change function is working correctly or not", async () => {
+      await expect(
+        staking.connect(signertwo).percentageChange(3)
+      ).to.be.revertedWith("ownersonly()");
+      await staking.connect(owner).percentageChange(3);
+      await expect(await staking.rewardrate()).to.be.equal(3);
+    });
   });
 
-
+  
 
   // describe("Checking DAO Token Contract deposit is working correctly", () => {
   //   it("Checks the deposit function in the DAO Project", async () => {
