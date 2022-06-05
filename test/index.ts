@@ -203,6 +203,9 @@ describe("Testing the DAO Project Contract", () => {
       evm_increaseTime(3*24*60*60);
       await aCDMPlatform.connect(owner).nextMode();
       await expect (await aCDMPlatform.connect(owner).Mode()).to.be.equal(1);
+      await expect (await aCDMPlatform.connect(owner).currentPrice()).to.be.equal(14300000000000);
+      await expect (await aCDMPlatform.connect(owner).saleSupply()).to.be.equal(60000000);
+
 
 
       // await expect(aCDMPlatform.connect(owner).tradeReferrerTwoParam(0)).to.be.revertedWith("DAOonly()");
