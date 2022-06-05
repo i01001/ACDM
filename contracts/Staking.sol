@@ -3,6 +3,8 @@ pragma solidity ^0.8.14;
 
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./DAO.sol";
+import "hardhat/console.sol";
+
 
 error ownersonly();
 error DAOonly();
@@ -73,7 +75,7 @@ contract Staking is ReentrancyGuard {
         owner = msg.sender;
         _initialTimeStamp = block.timestamp;
         StakersInfo.push();
-        _stakingperiod = 1 minutes;
+        _stakingperiod = 1 days;
     }
 
     

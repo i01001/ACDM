@@ -3,6 +3,9 @@ pragma solidity ^0.8;
 
 // https://uniswap.org/docs/v2/smart-contracts
 
+import "hardhat/console.sol";
+
+
 interface IUniswapV2Router {
   function getAmountsOut(uint amountIn, address[] memory path)
     external

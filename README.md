@@ -3,20 +3,18 @@
 
 liquidity: 0x832E744d07f8f8aC572E449f5Bbe8FeA4fE699ae  https://rinkeby.etherscan.io/address/0x832e744d07f8f8ac572e449f5bbe8fea4fe699ae#code
 
-XXXCoin: 0xc2C003D4fc03574D493d1fDe29766B016842D67f  https://rinkeby.etherscan.io/address/0xc2c003d4fc03574d493d1fde29766b016842d67f#code
+XXXCoin: 0x4E20A1628f2a49523C20aD41fe117Aa794e4560F  https://rinkeby.etherscan.io/address/0x4e20a1628f2a49523c20ad41fe117aa794e4560f#code
 
-Staking: https://rinkeby.etherscan.io/address/0x059ac5deefc1664ce906f11ac11eb9a7976b499e#code
+Staking (pending verify): 0x7806D6222d81A3FbCfe82e91Edf46dEA3F8a7e0A https://rinkeby.etherscan.io/address/0x7806d6222d81a3fbcfe82e91edf46dea3f8a7e0a#code
 
-DAO(verification pending): https://rinkeby.etherscan.io/address/0x62bc08dda957ef675e8c33cf92fc2fbcf330518b#code
+ACDM Token: 0x654b7302daB0527AD4FA0dA487998Db9b0c2Ac55 https://rinkeby.etherscan.io/address/0x654b7302dab0527ad4fa0da487998db9b0c2ac55
 
-ACDM Token: 0x30B51e0EEF36af1c3c3aE525035F9E27Cc7Bf314 https://rinkeby.etherscan.io/address/0x30b51e0eef36af1c3c3ae525035f9e27cc7bf314#code
+DAO (pending verify): 0x17a64C715aE43FDee404a94FbDD606E182E37a57 https://rinkeby.etherscan.io/address/0x17a64c715ae43fdee404a94fbdd606e182e37a57
 
-ACDM Platform: 
+ACDM Platform (pending verify) : 0x3179694Ff52166E30Eb430c84E5C30E36e8991ed https://rinkeby.etherscan.io/address/0x3179694ff52166e30eb430c84e5c30e36e8991ed#code
 
 
 Adding Liqudity to XXX / ETH pair on Uniswap: https://rinkeby.etherscan.io/tx/0x25ef08c39d515de63e46aa45a1f339951fa7a17903ae2c30109f7111f53b63a7
-
-///
 
 
 This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
