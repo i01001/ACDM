@@ -207,6 +207,8 @@ describe("Testing the DAO Project Contract", () => {
       await expect (await aCDMPlatform.connect(owner).saleSupply()).to.be.lt(100000000000);
     });
 
+    
+
   });
 
   // describe("Checking DAO Token Contract deposit is working correctly", () => {
