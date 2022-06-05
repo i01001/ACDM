@@ -216,7 +216,7 @@ describe("Testing the DAO Project Contract", () => {
       await xXXToken.connect(owner).mint(owner.address, 100000000000000000000);
       let _bal = await (await xXXToken.connect(owner).balanceOf(owner.address)).toString();
       console.log(_bal);
-      console.log(await (10 ** 20).toString() );
+      // console.log(await (10 ** 20).toString() );
       // await expect(_bal).to.be.equal(await (10 ** 20).toString());
     });
 
