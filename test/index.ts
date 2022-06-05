@@ -186,6 +186,16 @@ describe("Testing the DAO Project Contract", () => {
       expect(await (_obalance)).to.be.lt(_nbalance);
     });
 
+    
+    it("Check if access to changing parameters blocked", async () => {
+      await expect(aCDMPlatform.connect(owner).tradeReferrerOneParam(0)).to.be.revertedWith("DAOonly()");
+      await expect(aCDMPlatform.connect(owner).tradeReferrerTwoParam(0)).to.be.revertedWith("DAOonly()");
+      await expect(aCDMPlatform.connect(owner).saleReferrerOneParam(0)).to.be.revertedWith("DAOonly()");
+      await expect(aCDMPlatform.connect(owner).saleReferrerTwoParam(0)).to.be.revertedWith("DAOonly()");
+      await expect(aCDMPlatform.connect(owner).tradeComissionOwner()).to.be.revertedWith("DAOonly()");
+      await expect(aCDMPlatform.connect(owner).tradeComissionBurnToken()).to.be.revertedWith("DAOonly()");
+    });
+
 
     // it("Checks the mint function is minting tokens of the address", async () => {
     //   await dAOT.connect(owner).mint(owner.address, 10000);
