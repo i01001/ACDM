@@ -212,6 +212,8 @@ describe("Testing the DAO Project Contract", () => {
       await expect (await xXXToken.connect(owner).Staking()).to.be.equal(staking.address);
     });
 
+    
+
   });
 
   // describe("Checking DAO Token Contract deposit is working correctly", () => {
