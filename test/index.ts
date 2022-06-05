@@ -212,10 +212,10 @@ describe("Testing the DAO Project Contract", () => {
       await expect (await xXXToken.connect(owner).Staking()).to.be.equal(staking.address);
     });
 
-    it("Checks if the XXXCoin has Mint Function works correctly", async () => {
+    it("Check the liquidity function works correctly", async () => {
       await xXXToken.connect(owner).mint(owner.address, 10**20);
-      let _bal = await (await xXXToken.connect(owner).balanceOf(owner.address)).toString();
-      await expect(_bal).to.be.gt(await (10**10).toString());
+      await expect (await xXXToken.connect(owner).Staking()).to.be.equal(staking.address);
+
     });
 
 
