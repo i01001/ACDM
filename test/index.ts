@@ -174,8 +174,18 @@ describe("Testing the DAO Project Contract", () => {
       expect(await (_oldbalance)).to.be.lt(_newbalance);
       expect(await (_oldSpecialbalance)).to.be.lt(_newSpecialbalance);
       let _check = await aCDMPlatform.connect(owner).Orders(0);
-      console.log (await _check.tokenQuantity);
+      expect (await _check.tokenQuantity).to.be.equal(40000000);
     });
+
+
+    it("Check cancel order function works correctly", async () => {
+      const _oldbalance = await aCDM.connect(signerfour).balanceOf(signerfour.address);
+      await expect(await aCDMPlatform.connect(owner).cancelOrder(0)).to.be.revertedWith("notSeller()");
+      await aCDMPlatform.connect(signerfour).cancelOrder(0);  
+      const _newbalance = await aCDM.connect(signerfour).balanceOf(signerfour.address);
+      expect(await (_oldbalance)).to.be.lt(_newbalance);
+    });
+
 
     // it("Checks the mint function is minting tokens of the address", async () => {
     //   await dAOT.connect(owner).mint(owner.address, 10000);
