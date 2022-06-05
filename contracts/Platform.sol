@@ -138,14 +138,15 @@ function buy () public payable {
         revert timeUp();
         uint _orderVol = msg.value *1000000 / currentPrice;
         if(_orderVol > saleSupply){
-            uint _balance = (_orderVol - saleSupply) * currentPrice;
+            uint _balance = (_orderVol - saleSupply) * currentPrice / 1000000 ;
+            uint _order = saleSupply * currentPrice / 1000000;
             payable(msg.sender).transfer(_balance);
             if(Traders[msg.sender].refereOne != 0x0000000000000000000000000000000000000000)
-            payable(Traders[msg.sender].refereOne).transfer(_balance*saleRefOnePer/10000);
+            payable(Traders[msg.sender].refereOne).transfer(_order*saleRefOnePer/10000);
             if(Traders[msg.sender].refereTwo != 0x0000000000000000000000000000000000000000)
-            payable(Traders[msg.sender].refereTwo).transfer(_balance*saleRefTwoPer/10000);
-            ACDMToken(ACDMTokenContract).transfer(msg.sender, _balance);
-            saleSupply -= _balance;
+            payable(Traders[msg.sender].refereTwo).transfer(_order*saleRefTwoPer/10000);
+            ACDMToken(ACDMTokenContract).transfer(msg.sender, saleSupply);
+            saleSupply = 0;
         }
         else{
             if(Traders[msg.sender].refereOne != 0x0000000000000000000000000000000000000000)

@@ -126,16 +126,53 @@ describe("Testing the DAO Project Contract", () => {
 
 
     it("Checks buying tokens more than the supply", async () => {
-      const _buy = await aCDMPlatform.connect(signerthree).buy({value: ethers.utils.parseEther("1")});
+      const _buy = await aCDMPlatform.connect(signerthree).buy({value: ethers.utils.parseEther("0.6")});
       await expect (await aCDMPlatform.connect(owner).saleSupply()).to.be.equal(0);
       await expect (await aCDM.connect(owner).balanceOf(signerthree.address)).to.be.equal(100000000000);
-      await expect (await ethers.provider.getBalance(aCDMPlatform.address)).to.be.equal(ethers.utils.parseEther("0.92"));   
-      // let _newSignerthreeBalance = await ethers.provider.getBalance(signerthree.address);
-      // let _newSignertwoBalance = await ethers.provider.getBalance(signertwo.address);
-      // let _newowner = await ethers.provider.getBalance(owner.address);
-      // expect(await (_newSignerthreeBalance)).to.be.lt(_oldSignerthreeBalance);
-      // expect(await (_oldSignertwoBalance)).to.be.lt(_newSignertwoBalance);
-      // expect(await (_oldowner)).to.be.lt(_newowner);
+      await expect (await ethers.provider.getBalance(aCDMPlatform.address)).to.be.equal(ethers.utils.parseEther("0.92"));  
+    });
+
+
+    it("Checks if supply 0 results in count down timer being set to 0", async () => {
+      await expect (await aCDMPlatform.connect(owner).currentRoundEndTime()).to.be.lt(await getCurrentTime());
+    });
+
+    it("Checks if both Sale related and Trade related functions are blocked", async () => {
+      await expect (aCDMPlatform.connect(owner).buy()).to.be.revertedWith("incorrectValue()");
+      await expect (aCDMPlatform.connect(owner).buy({value: ethers.utils.parseEther("0.1")})).to.be.revertedWith("timeUp()");
+      await expect (aCDMPlatform.connect(owner).createOrder(100, 100)).to.be.revertedWith("invalidmode()");
+      await expect (aCDMPlatform.connect(owner).redeemOrder(0)).to.be.revertedWith("invalidmode()");
+      await expect (aCDMPlatform.connect(owner).cancelOrder(0)).to.be.revertedWith("timeUp()");
+    });
+
+    it("Checks if the nextMode function sets the Trade mode", async () => {
+      const _check = await aCDMPlatform.connect(owner).nextMode();
+      await expect (await aCDMPlatform.connect(owner).Mode()).to.be.equal(2);
+    });
+
+
+    it("Check create order function is working correctly", async () => {
+      await aCDM.connect(owner).mint(signertwo.address, 100000000);
+      await aCDM.connect(signertwo).approve(aCDMPlatform.address, 100000000);
+      const _check = await aCDMPlatform.connect(signertwo).createOrder(100000000,ethers.utils.parseEther("1"));
+      await expect (await (await aCDMPlatform.connect(owner).Orders(0))._orderNumber).to.be.equal(0);
+      await expect (await (await aCDMPlatform.connect(owner).Orders(0)).seller).to.be.equal(signertwo.address);
+      await expect (await (await aCDMPlatform.connect(owner).Orders(0)).tokenQuantity).to.be.equal(100000000);
+      await expect (await (await aCDMPlatform.connect(owner).Orders(0)).ethAmount).to.be.equal(ethers.utils.parseEther("1"));     
+    });
+
+    it("Check redeem order function would not work with value input", async () => {
+      await expect (aCDMPlatform.connect(signerfour).redeemOrder(0)).to.be.revertedWith("incorrectValue()");  
+    });
+
+    it("Check redeem order function works correctly", async () => {
+      const _oldbalance = await aCDM.connect(signerfour).balanceOf(signerfour.address);
+      const _oldSpecialbalance = await aCDMPlatform.connect(owner).specialBalance();
+      await aCDMPlatform.connect(signerfour).redeemOrder(0, {value: ethers.utils.parseEther("0.6")});  
+      const _newbalance = await aCDM.connect(signerfour).balanceOf(signerfour.address);
+      const _newSpecialbalance = await aCDMPlatform.connect(owner).specialBalance();
+      expect(await (_oldbalance)).to.be.lt(_newbalance);
+      expect(await (_oldSpecialbalance)).to.be.lt(_newSpecialbalance);
     });
 
     // it("Checks the mint function is minting tokens of the address", async () => {

@@ -11,7 +11,7 @@ ACDM Token: 0x654b7302daB0527AD4FA0dA487998Db9b0c2Ac55 https://rinkeby.etherscan
 
 DAO (pending verify): 0x17a64C715aE43FDee404a94FbDD606E182E37a57 https://rinkeby.etherscan.io/address/0x17a64c715ae43fdee404a94fbdd606e182e37a57
 
-ACDM Platform (pending verify) : 0x3179694Ff52166E30Eb430c84E5C30E36e8991ed https://rinkeby.etherscan.io/address/0x3179694ff52166e30eb430c84e5c30e36e8991ed#code
+ACDM Platform (pending verify) :  0x7Ce39Ea8E4682E715EC9755771FFfE53D627b67A https://rinkeby.etherscan.io/address/0x7ce39ea8e4682e715ec9755771fffe53d627b67a
 
 
 Adding Liqudity to XXX / ETH pair on Uniswap: https://rinkeby.etherscan.io/tx/0x25ef08c39d515de63e46aa45a1f339951fa7a17903ae2c30109f7111f53b63a7
