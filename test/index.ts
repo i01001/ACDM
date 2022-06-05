@@ -173,6 +173,8 @@ describe("Testing the DAO Project Contract", () => {
       const _newSpecialbalance = await aCDMPlatform.connect(owner).specialBalance();
       expect(await (_oldbalance)).to.be.lt(_newbalance);
       expect(await (_oldSpecialbalance)).to.be.lt(_newSpecialbalance);
+      let _check = await aCDMPlatform.connect(owner).Orders(0);
+      console.log (await _check.tokenQuantity);
     });
 
     // it("Checks the mint function is minting tokens of the address", async () => {
