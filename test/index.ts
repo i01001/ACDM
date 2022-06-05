@@ -214,7 +214,7 @@ describe("Testing the DAO Project Contract", () => {
 
     it("Checks if the XXXCoin has Mint Function works correctly", async () => {
       await xXXToken.connect(owner).mint(owner.address, 100000000000000000000);
-      await expect (await xXXToken.connect(owner).balanceOf(owner.address)).to.be.equal(100000000000000000000);
+      await expect (await xXXToken.connect(owner).balanceOf(owner.address)).to.be.equal(ethers.utils.parseEther("100"));
     });
 
 
