@@ -207,7 +207,14 @@ describe("Testing the DAO Project Contract", () => {
       await expect (await aCDMPlatform.connect(owner).saleSupply()).to.be.lt(100000000000);
     });
 
-    
+    it("Checks if the XXXCoin has the correct Staking Contract stored", async () => {
+      await expect (await aCDMPlatform.connect(owner).Mode()).to.be.equal(2);
+      await expect(aCDMPlatform.connect(owner).nextMode()).to.be.revertedWith("roundinprogress()");
+      await aCDMPlatform.connect(owner).nextMode();
+      await expect (await aCDMPlatform.connect(owner).Mode()).to.be.equal(1);
+      await expect (await aCDMPlatform.connect(owner).currentPrice()).to.be.equal(14300000000000);
+      await expect (await aCDMPlatform.connect(owner).saleSupply()).to.be.lt(100000000000);
+    });
 
   });
 
