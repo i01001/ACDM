@@ -12,7 +12,9 @@ import "@nomiclabs/hardhat-web3";
 import { ethers } from "hardhat";
 
 import './accounts.ts';
-// import './addProposal.ts';
-// import './deposit.ts';
-// import './finish.ts';
-// import './vote.ts';
+import './addProposal.ts';
+import './claim.ts';
+import './stake.ts';
+import './unstake.ts';
+import './finish.ts';
+import './vote.ts';
