@@ -180,7 +180,7 @@ describe("Testing the DAO Project Contract", () => {
 
     it("Check cancel order function works correctly", async () => {
       const _oldbalance = await aCDM.connect(signerfour).balanceOf(signerfour.address);
-      await expect(await aCDMPlatform.connect(owner).cancelOrder(0)).to.be.revertedWith("notSeller()");
+      await expect(aCDMPlatform.connect(owner).cancelOrder(0)).to.be.revertedWith("notSeller()");
       await aCDMPlatform.connect(signerfour).cancelOrder(0);  
       const _newbalance = await aCDM.connect(signerfour).balanceOf(signerfour.address);
       expect(await (_oldbalance)).to.be.lt(_newbalance);
