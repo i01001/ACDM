@@ -41,7 +41,7 @@ contract DAOProject is ReentrancyGuard {
     address public chairPerson;
     address public stakingContract;
     uint256 public minimumQuorum;
-    uint256 public debatingPeriodDuration;
+    uint96 public debatingPeriodDuration;
     uint256 public totalVotingPower;
 
     /// @notice proposalID - counter for the proposals
@@ -61,7 +61,7 @@ contract DAOProject is ReentrancyGuard {
         proposalStatus status;
         uint256 FORvotes;
         uint256 AGAINSTvotes;
-        uint256 startTime;
+        uint96 startTime;
         bytes callData;
         address recipient;
         string description;
@@ -74,7 +74,7 @@ contract DAOProject is ReentrancyGuard {
     /// @param voted - mapping of the proposal id with the bool that voting has been done or not
     struct voter {
         uint256 votingPower;
-        uint256 endTime;
+        uint96 endTime;
         uint256 endingProposalID;
         mapping(uint256 => bool) voted;
     }
@@ -100,7 +100,7 @@ contract DAOProject is ReentrancyGuard {
         address _chairPerson,
         address _stakecontract,
         uint256 _minimumQuorum,
-        uint256 _debatingPeriodDuration
+        uint96 _debatingPeriodDuration
     ) {
         chairPerson = _chairPerson;
         stakingContract = _stakecontract;
@@ -136,7 +136,7 @@ contract DAOProject is ReentrancyGuard {
             proposalStatus.INPROGRESS,
             0,
             0,
-            block.timestamp,
+            uint96(block.timestamp),
             _callData,
             _recipient,
             _description
