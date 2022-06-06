@@ -35,7 +35,7 @@ contract Staking is ReentrancyGuard {
     /// @dev totalRewards value is updated each time calRewards function is called
     /// @notice stakeTime is the block timestamp when staking started
     /// @dev stakeTime gets updated each time there is a change in stake or claim; totalRewards are updated prior to it to ensure accuracy
-    struct stakersInfo {
+    struct stakerInfo {
         address staker;
         uint256 stakerIndex;
         uint256 totalAmountStaked;
@@ -50,7 +50,7 @@ contract Staking is ReentrancyGuard {
     /// @dev _freeze false means that there is no freeze
     /// @notice targetAddress is the address of the ERC20 Token
     /// @dev The targetAddress needs to be entered in a function below after deploying this contract
-    stakersInfo[] StakersInfo;
+    stakerInfo[] stakersInfo;
     address public owner;
     uint256 _initialTimeStamp;
     uint256 public rewardrate = 3;
@@ -61,7 +61,7 @@ contract Staking is ReentrancyGuard {
     address public XXXTokenAddress;
 
     /// @notice addToIndexMap is used to map the staker address to the stakerIndex
-    mapping(address => uint256) addToIndexMap;
+    mapping(address => stakerInfo) stakersMap;
 
     /// @notice staked event is emitted when ever there is an additional stake
     /// @notice _unstake event is emitted when there is a claim or unstake
@@ -82,7 +82,7 @@ contract Staking is ReentrancyGuard {
     constructor() {
         owner = msg.sender;
         _initialTimeStamp = block.timestamp;
-        StakersInfo.push();
+        stakersInfo.push();
         _stakingperiod = 1 days;
     }
 
@@ -108,17 +108,17 @@ contract Staking is ReentrancyGuard {
     /// @dev This function is internal and cannot be viewed and accessed by end user directly
     /// @dev TotalRewards are calculated and updated; also the block timestamp is updated to current after updating totalRewards
     function calRewards(uint256 _stakerIndex) internal returns (uint256) {
-        uint256 _totalRewards = ((StakersInfo[_stakerIndex].totalAmountStaked +
-            StakersInfo[_stakerIndex].totalRewards) *
-            ((block.timestamp - StakersInfo[_stakerIndex].stakeTime) /
+        uint256 _totalRewards = ((stakersInfo[_stakerIndex].totalAmountStaked +
+            stakersInfo[_stakerIndex].totalRewards) *
+            ((block.timestamp - stakersInfo[_stakerIndex].stakeTime) /
                 (1 minutes)) *
             rewardrate) / 100;
         /// @dev if statement added to ensure incase of mathematical error; rewards are not reduced
-        if (_totalRewards > StakersInfo[_stakerIndex].totalRewards) {
-            StakersInfo[_stakerIndex].totalRewards = _totalRewards;
-            StakersInfo[_stakerIndex].stakeTime = block.timestamp;
+        if (_totalRewards > stakersInfo[_stakerIndex].totalRewards) {
+            stakersInfo[_stakerIndex].totalRewards = _totalRewards;
+            stakersInfo[_stakerIndex].stakeTime = block.timestamp;
         }
-        return StakersInfo[_stakerIndex].totalRewards;
+        return stakersInfo[_stakerIndex].totalRewards;
     }
 
     /// @notice stake function for a user to add staking
@@ -134,8 +134,7 @@ contract Staking is ReentrancyGuard {
             revert setDAOContractaddress();
         if (XXXTokenAddress == 0x0000000000000000000000000000000000000000)
             revert setXXXTokenAddress();
-        // require (block.timestamp >= _initialTimeStamp + 10 minutes, "Cannot stake within 10 minutes of contract being set up!");
-        uint256 _index = addToIndexMap[msg.sender];
+        uint256 _index = stakersMap[msg.sender].stakerIndex;
         if (_index == 0) {
             (bool success, ) = targetAddress.call(
                 abi.encodeWithSignature(
@@ -146,12 +145,12 @@ contract Staking is ReentrancyGuard {
                 )
             );
             if (!success) revert errorCallingFunction();
-            StakersInfo.push();
-            _index = StakersInfo.length - 1;
-            StakersInfo[_index].staker = msg.sender;
-            StakersInfo[_index].totalAmountStaked = _amount;
-            StakersInfo[_index].stakeTime = block.timestamp;
-            addToIndexMap[msg.sender] = _index;
+            stakersInfo.push();
+            _index = stakersInfo.length - 1;
+            stakersInfo[_index].staker = msg.sender;
+            stakersInfo[_index].totalAmountStaked = _amount;
+            stakersInfo[_index].stakeTime = block.timestamp;
+            stakersMap[msg.sender].stakerIndex = _index;
             emit staked(msg.sender, _index, _amount, block.timestamp);
             return true;
         } else {
@@ -165,7 +164,7 @@ contract Staking is ReentrancyGuard {
             );
             if (!_success) revert errorCallingFunction();
             calRewards(_index);
-            StakersInfo[_index].totalAmountStaked += _amount;
+            stakersInfo[_index].totalAmountStaked += _amount;
             emit staked(msg.sender, _index, _amount, block.timestamp);
             return true;
         }
@@ -175,21 +174,21 @@ contract Staking is ReentrancyGuard {
     /// returns true if successful
     /// @dev The totalRewards are calculated prior to transfer and then the the totalRewards are reset to 0
     function claim() public nonReentrant returns (bool success_) {
-        uint256 _index = addToIndexMap[msg.sender];
+        uint256 _index = stakersMap[msg.sender].stakerIndex;
         if (_index == 0) revert stakernonexist();
         if (_freeze == true) revert frozen();
         calRewards(_index);
-        if (StakersInfo[_index].totalRewards == 0) revert norewards();
+        if (stakersInfo[_index].totalRewards == 0) revert norewards();
         (bool success, ) = XXXTokenAddress.call(
             abi.encodeWithSignature(
                 "mint(address,uint256)",
                 msg.sender,
-                StakersInfo[_index].totalRewards
+                stakersInfo[_index].totalRewards
             )
         );
         if (!success) revert errorCallingFunction();
-        emit _unstake(msg.sender, _index, StakersInfo[_index].totalRewards);
-        StakersInfo[_index].totalRewards = 0;
+        emit _unstake(msg.sender, _index, stakersInfo[_index].totalRewards);
+        stakersInfo[_index].totalRewards = 0;
         return true;
     }
 
@@ -198,9 +197,9 @@ contract Staking is ReentrancyGuard {
     /// @dev calculates the totalRewards then transfers the totalAmountStaked
     /// @dev It is to be noted that only the staked tokens are sent back; reward tokens will remain as it is - those can be transferred using claim function
     function unstake() public returns (bool success_) {
-        uint256 _index = addToIndexMap[msg.sender];
+        uint256 _index = stakersMap[msg.sender].stakerIndex;
         if (_index == 0) revert stakernonexist();
-        if (block.timestamp < StakersInfo[_index].stakeTime + _stakingperiod)
+        if (block.timestamp < stakersInfo[_index].stakeTime + _stakingperiod)
             revert minimumstakingtime();
         if (_freeze == true) revert frozen();
         uint256 _check = DAOProject(DAOAddress).unstaking(msg.sender);
@@ -210,7 +209,7 @@ contract Staking is ReentrancyGuard {
         emit _unstake(
             msg.sender,
             _index,
-            StakersInfo[_index].totalAmountStaked
+            stakersInfo[_index].totalAmountStaked
         );
         return true;
     }
@@ -221,7 +220,7 @@ contract Staking is ReentrancyGuard {
         nonReentrant
         returns (bool)
     {
-        uint256 _balance = StakersInfo[_index].totalAmountStaked;
+        uint256 _balance = stakersInfo[_index].totalAmountStaked;
         (bool success, ) = targetAddress.call(
             abi.encodeWithSignature(
                 "transfer(address,uint256)",
@@ -230,15 +229,15 @@ contract Staking is ReentrancyGuard {
             )
         );
         if (!success) revert errorCallingFunction();
-        StakersInfo[_index].totalAmountStaked = 0;
+        stakersInfo[_index].totalAmountStaked = 0;
         return true;
     }
 
     /// @notice Staking balance check
     function balance(address _staker) public view returns (uint256) {
-        uint256 _index = addToIndexMap[_staker];
+        uint256 _index = stakersMap[_staker].stakerIndex;
         if (_index == 0) revert stakernonexist();
-        uint256 _balance = StakersInfo[_index].totalAmountStaked;
+        uint256 _balance = stakersInfo[_index].totalAmountStaked;
         return _balance;
     }
 
