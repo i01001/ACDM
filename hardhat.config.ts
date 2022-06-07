@@ -9,6 +9,7 @@ import "solidity-coverage";
 import "./tasks/index.ts";
 import "@nomiclabs/hardhat-web3";
 import "@uniswap/hardhat-v3-deploy";
+import "@tenderly/hardhat-tenderly"
 
 
 dotenv.config();
