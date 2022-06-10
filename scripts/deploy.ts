@@ -48,6 +48,10 @@ async function main() {
   await staking.deployed();
   console.log("Staking deployed to:", staking.address);
   
+  await ethers.tenderly.persistArtifacts({
+    name: "Staking",
+    address: staking.address,
+})
 
   const DAOProject = await ethers.getContractFactory("DAOProject");
   const dAOProject = await DAOProject.deploy(
